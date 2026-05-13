@@ -7,10 +7,40 @@ const authRoutes = require("./routes/authRoutes");
 const buildingRoutes = require("./routes/buildingRoutes");
 const componentRoutes = require("./routes/componentRoutes");
 
-// ── Connect to MongoDB ─────────────────────────────────────────────────────────
-connectDB();
+const User = require("./models/User");
 
 const app = express();
+
+// Admin creation 
+const createAdmin = async () => {
+  try {
+    const existingAdmin = await User.findOne({
+      email: 'admin@structural.com'
+    });
+
+    if (!existingAdmin) {
+      await User.create({
+        name: 'Admin',
+        email: 'admin@structural.com',
+        password: 'admin123',
+        role: 'admin'
+      });
+
+      console.log('Admin created');
+    } else {
+      console.log('Admin already exists');
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// ── Connect to MongoDB ────────────────────────────────────────────────────────
+connectDB().then(() => {
+  createAdmin();
+});
+
+
 
 // ── Middleware ─────────────────────────────────────────────────────────────────
 app.use(cors());
