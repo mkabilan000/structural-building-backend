@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
-
+const authRoutes = require("./routes/authRoutes");
 const buildingRoutes = require("./routes/buildingRoutes");
 const componentRoutes = require("./routes/componentRoutes");
 
@@ -32,6 +32,8 @@ app.get("/api/health", (req, res) => {
 // ── Routes ─────────────────────────────────────────────────────────────────────
 app.use("/api/buildings", buildingRoutes);
 app.use("/api/components", componentRoutes);
+app.use("/api/auth", authRoutes);
+
 
 // ── 404 Handler ────────────────────────────────────────────────────────────────
 app.use((req, res) => {
